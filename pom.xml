@@ -625,4 +625,43 @@
     <url>https://travis-ci.org/gantsign/doxia-sink-api-ktx</url>
   </ciManagement>
 
+  <distributionManagement>
+    <repository>
+      <id>bintray-gantsign-maven</id>
+      <name>gantsign-maven</name>
+      <url>https://dl.bintray.com/gantsign/maven</url>
+    </repository>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>publish-artifacts</id>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+
+      <distributionManagement>
+        <repository>
+          <id>bintray-gantsign-maven</id>
+          <name>gantsign-maven</name>
+          <url>https://api.bintray.com/maven/gantsign/maven/doxia-sink-api-ktx/;publish=1</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
+
 </project>
