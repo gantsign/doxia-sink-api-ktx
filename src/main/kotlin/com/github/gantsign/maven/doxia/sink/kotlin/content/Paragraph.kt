@@ -25,7 +25,12 @@ import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 
-class Paragraph(override val sink: Sink) : DoxiaContent(), TextContainer, FigureGraphicsContainer
+class Paragraph(override val sink: Sink) :
+    DoxiaContent(),
+    TextContainer,
+    FigureGraphicsContainer,
+    LinkContainer,
+    AnchorContainer
 
 interface ParagraphContainer {
     val sink: Sink
