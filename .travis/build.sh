@@ -5,6 +5,6 @@
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
     if [ "$TRAVIS_TAG" != "" ]; then
-        ./mvnw deploy -P publish-artifacts --batch-mode --show-version --settings .travis/settings.xml
+        ./mvnw deploy -P publish-artifacts --batch-mode --show-version --settings .travis/settings.xml -Denforcer.skip=true
     fi
 fi
