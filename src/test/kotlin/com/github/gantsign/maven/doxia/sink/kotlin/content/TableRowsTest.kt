@@ -21,7 +21,9 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.Justify
+import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
+import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
@@ -33,7 +35,62 @@ import org.junit.Test
 class TableRowsTest {
 
     @Test
-    fun test() {
+    fun `no args`() {
+        val sink: Sink = mock()
+
+        val tableRowsContainer = object : TableRowsContainer {
+            override val sink: Sink = sink
+        }
+
+        tableRowsContainer.tableRows {
+            tableRow {
+                tableCell {
+                    +"body1"
+                }
+            }
+        }
+
+        verify(sink).tableRows(any(), eq(false))
+        argumentCaptor<SinkEventAttributes>().apply {
+            verify(sink).tableRow(capture())
+            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
+            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
+            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
+            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
+            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        }
+        argumentCaptor<SinkEventAttributes>().apply {
+            verify(sink).tableCell(capture())
+            assertThat(firstValue[SinkEventAttributes.ABBRV]).isNull()
+            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(firstValue[SinkEventAttributes.AXIS]).isNull()
+            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(firstValue[SinkEventAttributes.COLSPAN]).isNull()
+            assertThat(firstValue[SinkEventAttributes.HEADERS]).isNull()
+            assertThat(firstValue[SinkEventAttributes.HEIGHT]).isNull()
+            assertThat(firstValue[SinkEventAttributes.NOWRAP]).isNull()
+            assertThat(firstValue[SinkEventAttributes.ROWSPAN]).isNull()
+            assertThat(firstValue[SinkEventAttributes.SCOPE]).isNull()
+            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
+            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
+            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
+            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
+            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        }
+        verify(sink).text("body1")
+        verify(sink).tableCell_()
+        verify(sink).tableRow_()
+        verify(sink).tableRows_()
+        verifyNoMoreInteractions(sink)
+    }
+
+    @Test
+    fun `with args`() {
         val sink: Sink = mock()
 
         val tableRowsContainer = object : TableRowsContainer {

@@ -29,7 +29,11 @@ interface TableRowsContainer {
     val sink: Sink
 
     @JvmDefault
-    fun tableRows(grid: Boolean, vararg justification: Justify, init: TableRows.() -> Unit) {
+    fun tableRows(
+        grid: Boolean = false,
+        vararg justification: Justify = emptyArray(),
+        init: TableRows.() -> Unit
+    ) {
         sink.tableRows(justification.map(Justify::value).toIntArray(), grid)
         init(TableRows(sink))
         sink.tableRows_()
