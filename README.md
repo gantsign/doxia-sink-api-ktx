@@ -1,6 +1,7 @@
 # Kotlin Extensions for Doxia
 
 [![Build Status](https://travis-ci.com/gantsign/doxia-sink-api-ktx.svg?branch=master)](https://travis-ci.com/gantsign/doxia-sink-api-ktx)
+[![Known Vulnerabilities](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx/badge.svg)](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx)
 
 Kotlin extensions for the Doxia is a content generation framework. The main use
 of these extensions are for generating reports in custom Maven plugins.
