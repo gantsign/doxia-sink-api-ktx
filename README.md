@@ -4,8 +4,9 @@
 [![codecov](https://codecov.io/gh/gantsign/doxia-sink-api-ktx/branch/master/graph/badge.svg)](https://codecov.io/gh/gantsign/doxia-sink-api-ktx)
 [![Known Vulnerabilities](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx/badge.svg)](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx)
 
-Kotlin extensions for the Doxia is a content generation framework. The main use
-of these extensions are for generating reports in custom Maven plugins.
+Kotlin extensions for the [Apache Doxia](https://maven.apache.org/doxia/) is a
+content generation framework. The main use of these extensions are for
+generating reports in custom Maven plugins.
 
 **This API is currently unstable, no compatibility guarantees are made between versions.**
 
