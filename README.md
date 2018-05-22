@@ -154,8 +154,7 @@ fun generatorReport(results: CheckResults) {
 
 ```
 
-Repository
-----------
+## Repository
 
 This library isn't currently available from Maven Central, you need to add the
 following to your repository manager or to your Maven POM.
@@ -175,15 +174,13 @@ following to your repository manager or to your Maven POM.
 </repositories>
 ```
 
-License
--------
+## License
 
 This software is licensed under the terms in the file named "LICENSE" in the
 root directory of this project. This project has dependencies that are under
 different licenses.
 
-Author Information
-------------------
+## Author Information
 
 John Freeman
 
