@@ -23,7 +23,7 @@
 
   <groupId>com.github.gantsign.maven.doxia</groupId>
   <artifactId>doxia-sink-api-ktx</artifactId>
-  <version>0.5.7-SNAPSHOT</version>
+  <version>0.5.8-SNAPSHOT</version>
 
   <name>Kotlin Extensions for Doxia</name>
   <description>A kotlin DSL for outputting documentation using Doxia.</description>
