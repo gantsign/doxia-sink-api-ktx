@@ -541,7 +541,7 @@
         <version>${kotlin.version}</version>
         <configuration>
           <args>
-            <arg>-Xenable-jvm-default</arg>
+            <arg>-Xjvm-default=enable</arg>
           </args>
           <jvmTarget>${maven.compiler.target}</jvmTarget>
         </configuration>
