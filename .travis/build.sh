@@ -2,7 +2,7 @@
 
 set -e
 
-./mvnw install --batch-mode --show-version --settings .travis/settings.xml
+./mvnw install --batch-mode --show-version
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
@@ -11,7 +11,5 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
         -in .travis/codesigning.asc.enc -out .travis/codesigning.asc -d
     gpg --fast-import .travis/codesigning.asc
 
-    if [ "$TRAVIS_TAG" != "" ]; then
-        ./mvnw deploy -P publish-artifacts --batch-mode --show-version --settings .travis/settings.xml -Denforcer.skip=true
-    fi
+    ./mvnw deploy -P publish-artifacts --batch-mode --show-version --settings .travis/settings.xml -Denforcer.skip=true
 fi
