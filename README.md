@@ -1,6 +1,7 @@
 # Kotlin Extensions for Doxia
 
 [![Build Status](https://travis-ci.com/gantsign/doxia-sink-api-ktx.svg?branch=master)](https://travis-ci.com/gantsign/doxia-sink-api-ktx)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.gantsign.maven.doxia/doxia-sink-api-ktx/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.gantsign.maven.doxia/doxia-sink-api-ktx)
 [![codecov](https://codecov.io/gh/gantsign/doxia-sink-api-ktx/branch/master/graph/badge.svg)](https://codecov.io/gh/gantsign/doxia-sink-api-ktx)
 [![Known Vulnerabilities](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx/badge.svg)](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx)
 
@@ -153,26 +154,6 @@ fun generatorReport(results: CheckResults) {
     }
 }
 
-```
-
-## Repository
-
-This library isn't currently available from Maven Central, you need to add the
-following to your repository manager or to your Maven POM.
-
-```xml
-<repositories>
-  ...
-  <repository>
-    <snapshots>
-      <enabled>false</enabled>
-    </snapshots>
-    <id>bintray-gantsign-maven</id>
-    <name>bintray</name>
-    <url>https://dl.bintray.com/gantsign/maven</url>
-  </repository>
-  ...
-</repositories>
 ```
 
 ## License
