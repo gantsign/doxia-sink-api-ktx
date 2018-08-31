@@ -264,6 +264,11 @@
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.2</version>
         </plugin>
+        <plugin>
+          <groupId>org.jetbrains.dokka</groupId>
+          <artifactId>dokka-maven-plugin</artifactId>
+          <version>0.9.17</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -371,6 +376,10 @@
                 </bannedPlugins>
                 <requireNoRepositories>
                   <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead)</message>
+                  <allowedPluginRepositories>
+                    <!-- jcenter is only required for the Dokka plugin during the build -->
+                    <repository>jcenter</repository>
+                  </allowedPluginRepositories>
                 </requireNoRepositories>
                 <banDuplicateClasses>
                   <findAllDuplicates>true</findAllDuplicates>
@@ -644,6 +653,14 @@
     <url>https://travis-ci.org/gantsign/doxia-sink-api-ktx</url>
   </ciManagement>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>https://jcenter.bintray.com/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <distributionManagement>
     <repository>
       <id>bintray-gantsign-maven</id>
@@ -684,6 +701,18 @@
                 <goals>
                   <goal>jar</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jetbrains.dokka</groupId>
+            <artifactId>dokka-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>javadocJar</goal>
+                </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
