@@ -20,41 +20,6 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class Verbatim(override val sink: Sink) : DoxiaContent(), TextContainer
-
-interface VerbatimContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun verbatim(
-        decoration: String = "",
-        align: String = "",
-        width: String = "",
-        id: String = "",
-        cssClass: String = "",
-        style: Style? = null,
-        lang: String = "",
-        title: String = "",
-        init: Verbatim.() -> Unit
-    ) {
-        sink.verbatim(
-            attributesOf(
-                SinkEventAttributes.DECORATION to decoration,
-                SinkEventAttributes.ALIGN to align,
-                SinkEventAttributes.WIDTH to width,
-                SinkEventAttributes.ID to id,
-                SinkEventAttributes.CLASS to cssClass,
-                SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
-        )
-        init(Verbatim(sink))
-        sink.verbatim_()
-    }
-}

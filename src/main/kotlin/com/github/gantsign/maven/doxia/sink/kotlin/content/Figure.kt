@@ -20,38 +20,9 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class Figure(override val sink: Sink) :
     DoxiaContent(),
     FigureGraphicsContainer,
     FigureCaptionContainer
-
-interface FigureContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun figure(
-        id: String = "",
-        cssClass: String = "",
-        style: Style? = null,
-        lang: String = "",
-        title: String = "",
-        init: Figure.() -> Unit
-    ) {
-        sink.figure(
-            attributesOf(
-                SinkEventAttributes.ID to id,
-                SinkEventAttributes.CLASS to cssClass,
-                SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
-        )
-        init(Figure(sink))
-        sink.figure_()
-    }
-}

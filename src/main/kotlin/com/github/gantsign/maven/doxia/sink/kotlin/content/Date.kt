@@ -23,14 +23,3 @@ import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
 import org.apache.maven.doxia.sink.Sink
 
 class Date(override val sink: Sink) : DoxiaContent(), TextContainer
-
-interface DateContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun date(init: Date.() -> Unit) {
-        sink.date()
-        init(Date(sink))
-        sink.date_()
-    }
-}

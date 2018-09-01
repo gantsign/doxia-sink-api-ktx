@@ -20,23 +20,6 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class Author(override val sink: Sink) : DoxiaContent(), TextContainer
-
-interface AuthorContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun author(email: String = "", init: Author.() -> Unit) {
-        sink.author(
-            attributesOf(
-                SinkEventAttributes.EMAIL to email
-            )
-        )
-        init(Author(sink))
-        sink.author_()
-    }
-}

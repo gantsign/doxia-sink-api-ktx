@@ -20,38 +20,6 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
-import com.github.gantsign.maven.doxia.sink.kotlin.style.NumberingStyle
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class NumberedList(override val sink: Sink) : DoxiaContent(), NumberedListItemContainer
-
-interface NumberedListContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun numberedList(
-        numberingStyle: NumberingStyle,
-        id: String = "",
-        cssClass: String = "",
-        style: Style? = null,
-        lang: String = "",
-        title: String = "",
-        init: NumberedList.() -> Unit
-    ) {
-        sink.numberedList(
-            numberingStyle.value,
-            attributesOf(
-                SinkEventAttributes.ID to id,
-                SinkEventAttributes.CLASS to cssClass,
-                SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
-        )
-        init(NumberedList(sink))
-        sink.numberedList_()
-    }
-}

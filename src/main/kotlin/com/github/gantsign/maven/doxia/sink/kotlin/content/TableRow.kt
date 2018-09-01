@@ -20,44 +20,9 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class TableRow(override val sink: Sink) :
     DoxiaContent(),
     TableCellContainer,
     TableHeaderCellContainer
-
-interface TableRowContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun tableRow(
-        align: String = "",
-        bgColor: String = "",
-        vAlign: String = "",
-        id: String = "",
-        cssClass: String = "",
-        style: Style? = null,
-        lang: String = "",
-        title: String = "",
-        init: TableRow.() -> Unit
-    ) {
-        sink.tableRow(
-            attributesOf(
-                SinkEventAttributes.ALIGN to align,
-                SinkEventAttributes.BGCOLOR to bgColor,
-                SinkEventAttributes.VALIGN to vAlign,
-                SinkEventAttributes.ID to id,
-                SinkEventAttributes.CLASS to cssClass,
-                SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
-        )
-        init(TableRow(sink))
-        sink.tableRow_()
-    }
-}

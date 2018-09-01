@@ -20,53 +20,6 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class Table(override val sink: Sink) : DoxiaContent(), TableCaptionContainer, TableRowsContainer
-
-interface TableContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun table(
-        align: String = "",
-        bgColor: String = "",
-        border: String = "",
-        cellPadding: String = "",
-        cellSpacing: String = "",
-        frame: String = "",
-        rules: String = "",
-        summary: String = "",
-        width: String = "",
-        id: String = "",
-        cssClass: String = "",
-        style: Style? = null,
-        lang: String = "",
-        title: String = "",
-        init: Table.() -> Unit
-    ) {
-        sink.table(
-            attributesOf(
-                SinkEventAttributes.ALIGN to align,
-                SinkEventAttributes.BGCOLOR to bgColor,
-                SinkEventAttributes.BORDER to border,
-                SinkEventAttributes.CELLPADDING to cellPadding,
-                SinkEventAttributes.CELLSPACING to cellSpacing,
-                SinkEventAttributes.FRAME to frame,
-                SinkEventAttributes.RULES to rules,
-                SinkEventAttributes.SUMMARY to summary,
-                SinkEventAttributes.WIDTH to width,
-                SinkEventAttributes.ID to id,
-                SinkEventAttributes.CLASS to cssClass,
-                SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
-        )
-        init(Table(sink))
-        sink.table_()
-    }
-}
