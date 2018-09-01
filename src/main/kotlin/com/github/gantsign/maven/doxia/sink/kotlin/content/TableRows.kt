@@ -20,22 +20,6 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Justify
 import org.apache.maven.doxia.sink.Sink
 
 class TableRows(override val sink: Sink) : DoxiaContent(), TableRowContainer
-
-interface TableRowsContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun tableRows(
-        grid: Boolean = false,
-        vararg justification: Justify = emptyArray(),
-        init: TableRows.() -> Unit
-    ) {
-        sink.tableRows(justification.map(Justify::value).toIntArray(), grid)
-        init(TableRows(sink))
-        sink.tableRows_()
-    }
-}

@@ -20,35 +20,6 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
-import com.github.gantsign.maven.doxia.sink.kotlin.style.Style
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
 
 class DefinedTerm(override val sink: Sink) : DoxiaContent(), TextContainer
-
-interface DefinedTermContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun definedTerm(
-        id: String = "",
-        cssClass: String = "",
-        style: Style? = null,
-        lang: String = "",
-        title: String = "",
-        init: DefinedTerm.() -> Unit
-    ) {
-        sink.definedTerm(
-            attributesOf(
-                SinkEventAttributes.ID to id,
-                SinkEventAttributes.CLASS to cssClass,
-                SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
-        )
-        init(DefinedTerm(sink))
-        sink.definedTerm_()
-    }
-}

@@ -20,35 +20,10 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.DoxiaContent
-import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
 import org.apache.maven.doxia.sink.Sink
-import org.apache.maven.doxia.sink.SinkEventAttributes
-import java.net.URL
 
 class Head(override val sink: Sink) :
     DoxiaContent(),
     TitleContainer,
     AuthorContainer,
     DateContainer
-
-interface HeadContainer {
-    val sink: Sink
-
-    @JvmDefault
-    fun head(
-        lang: String = "",
-        profile: List<URL> = listOf(),
-        init: Head.() -> Unit
-    ) {
-        sink.head(
-            attributesOf(
-                SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.PROFILE to profile.joinToString(
-                    separator = " "
-                )
-            )
-        )
-        init(Head(sink))
-        sink.head_()
-    }
-}
