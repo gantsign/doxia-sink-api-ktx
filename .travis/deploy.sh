@@ -14,5 +14,6 @@ gpg --fast-import .travis/codesigning.asc
 ./mvnw deploy \
     --settings .travis/settings.xml \
     -P publish-artifacts \
+    -Dmaven.test.skip=true \
     --batch-mode \
     --show-version
