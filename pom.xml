@@ -173,7 +173,7 @@
         <plugin>
           <groupId>com.github.gantsign.maven</groupId>
           <artifactId>ktlint-maven-plugin</artifactId>
-          <version>0.9.15</version>
+          <version>0.9.16</version>
         </plugin>
         <plugin>
           <groupId>io.github.zlika</groupId>
