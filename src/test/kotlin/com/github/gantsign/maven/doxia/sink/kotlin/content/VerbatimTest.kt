@@ -22,10 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -35,39 +38,50 @@ class VerbatimTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val verbatimContainer = object : VerbatimContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.verbatim(capture(attributesSlot)) } just Runs
 
         verbatimContainer.verbatim {
             +"body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).verbatim(capture())
-            assertThat(firstValue[SinkEventAttributes.DECORATION]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.verbatim(any<SinkEventAttributes>()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.DECORATION]).isNull()
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).verbatim_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.verbatim_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val verbatimContainer = object : VerbatimContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.verbatim(capture(attributesSlot)) } just Runs
 
         verbatimContainer.verbatim(
             decoration = "decoration1",
@@ -82,19 +96,22 @@ class VerbatimTest {
             +"body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).verbatim(capture())
-            assertThat(firstValue[SinkEventAttributes.DECORATION]).isEqualTo("decoration1")
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isEqualTo("align1")
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isEqualTo("width1")
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.verbatim(any<SinkEventAttributes>()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.DECORATION]).isEqualTo("decoration1")
+            assertThat(it[SinkEventAttributes.ALIGN]).isEqualTo("align1")
+            assertThat(it[SinkEventAttributes.WIDTH]).isEqualTo("width1")
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verify(sink).text("body1")
-        verify(sink).verbatim_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.verbatim_() }
+
+        confirmVerified(sink)
     }
 }

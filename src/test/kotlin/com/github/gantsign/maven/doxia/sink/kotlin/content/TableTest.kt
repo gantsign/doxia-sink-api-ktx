@@ -23,10 +23,13 @@ import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.Justify
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -36,11 +39,19 @@ class TableTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val tableContainer = object : TableContainer {
             override val sink: Sink = sink
         }
+
+        val tableAttributesSlot = slot<SinkEventAttributes>()
+        val tableRowAttributesSlot = slot<SinkEventAttributes>()
+        val tableCellAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.table(capture(tableAttributesSlot)) } just Runs
+        every { sink.tableRow(capture(tableRowAttributesSlot)) } just Runs
+        every { sink.tableCell(capture(tableCellAttributesSlot)) } just Runs
 
         tableContainer.table {
             tableRows(false, Justify.JUSTIFY_LEFT) {
@@ -52,70 +63,86 @@ class TableTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).table(capture())
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BORDER]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CELLPADDING]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CELLSPACING]).isNull()
-            assertThat(firstValue[SinkEventAttributes.FRAME]).isNull()
-            assertThat(firstValue[SinkEventAttributes.RULES]).isNull()
-            assertThat(firstValue[SinkEventAttributes.SUMMARY]).isNull()
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.table(any()) }
+
+        tableAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(it[SinkEventAttributes.BORDER]).isNull()
+            assertThat(it[SinkEventAttributes.CELLPADDING]).isNull()
+            assertThat(it[SinkEventAttributes.CELLSPACING]).isNull()
+            assertThat(it[SinkEventAttributes.FRAME]).isNull()
+            assertThat(it[SinkEventAttributes.RULES]).isNull()
+            assertThat(it[SinkEventAttributes.SUMMARY]).isNull()
+            assertThat(it[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).tableRows(intArrayOf(Sink.JUSTIFY_LEFT), false)
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).tableRow(capture())
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.tableRows(intArrayOf(Sink.JUSTIFY_LEFT), false) }
+
+        verify { sink.tableRow(any()) }
+
+        tableRowAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(it[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).tableCell(capture())
-            assertThat(firstValue[SinkEventAttributes.ABBRV]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.AXIS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
-            assertThat(firstValue[SinkEventAttributes.COLSPAN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.HEADERS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.HEIGHT]).isNull()
-            assertThat(firstValue[SinkEventAttributes.NOWRAP]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ROWSPAN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.SCOPE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.tableCell(any<SinkEventAttributes>()) }
+
+        tableCellAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ABBRV]).isNull()
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.AXIS]).isNull()
+            assertThat(it[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(it[SinkEventAttributes.COLSPAN]).isNull()
+            assertThat(it[SinkEventAttributes.HEADERS]).isNull()
+            assertThat(it[SinkEventAttributes.HEIGHT]).isNull()
+            assertThat(it[SinkEventAttributes.NOWRAP]).isNull()
+            assertThat(it[SinkEventAttributes.ROWSPAN]).isNull()
+            assertThat(it[SinkEventAttributes.SCOPE]).isNull()
+            assertThat(it[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).tableCell_()
-        verify(sink).tableRow_()
-        verify(sink).tableRows_()
-        verify(sink).table_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.tableCell_() }
+        verify { sink.tableRow_() }
+        verify { sink.tableRows_() }
+        verify { sink.table_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val tableContainer = object : TableContainer {
             override val sink: Sink = sink
         }
+
+        val tableAttributesSlot = slot<SinkEventAttributes>()
+        val tableRowAttributesSlot = slot<SinkEventAttributes>()
+        val tableCellAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.table(capture(tableAttributesSlot)) } just Runs
+        every { sink.tableRow(capture(tableRowAttributesSlot)) } just Runs
+        every { sink.tableCell(capture(tableCellAttributesSlot)) } just Runs
 
         tableContainer.table(
             align = "align1",
@@ -142,60 +169,68 @@ class TableTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).table(capture())
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isEqualTo("align1")
-            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isEqualTo("bgColor1")
-            assertThat(firstValue[SinkEventAttributes.BORDER]).isEqualTo("border1")
-            assertThat(firstValue[SinkEventAttributes.CELLPADDING]).isEqualTo("cellPadding1")
-            assertThat(firstValue[SinkEventAttributes.CELLSPACING]).isEqualTo("cellSpacing1")
-            assertThat(firstValue[SinkEventAttributes.FRAME]).isEqualTo("frame1")
-            assertThat(firstValue[SinkEventAttributes.RULES]).isEqualTo("rules1")
-            assertThat(firstValue[SinkEventAttributes.SUMMARY]).isEqualTo("summary1")
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isEqualTo("width1")
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.table(any()) }
+
+        tableAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALIGN]).isEqualTo("align1")
+            assertThat(it[SinkEventAttributes.BGCOLOR]).isEqualTo("bgColor1")
+            assertThat(it[SinkEventAttributes.BORDER]).isEqualTo("border1")
+            assertThat(it[SinkEventAttributes.CELLPADDING]).isEqualTo("cellPadding1")
+            assertThat(it[SinkEventAttributes.CELLSPACING]).isEqualTo("cellSpacing1")
+            assertThat(it[SinkEventAttributes.FRAME]).isEqualTo("frame1")
+            assertThat(it[SinkEventAttributes.RULES]).isEqualTo("rules1")
+            assertThat(it[SinkEventAttributes.SUMMARY]).isEqualTo("summary1")
+            assertThat(it[SinkEventAttributes.WIDTH]).isEqualTo("width1")
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verify(sink).tableRows(intArrayOf(Sink.JUSTIFY_LEFT), false)
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).tableRow(capture())
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.tableRows(intArrayOf(Sink.JUSTIFY_LEFT), false) }
+
+        verify { sink.tableRow(any()) }
+
+        tableRowAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(it[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).tableCell(capture())
-            assertThat(firstValue[SinkEventAttributes.ABBRV]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.AXIS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BGCOLOR]).isNull()
-            assertThat(firstValue[SinkEventAttributes.COLSPAN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.HEADERS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.HEIGHT]).isNull()
-            assertThat(firstValue[SinkEventAttributes.NOWRAP]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ROWSPAN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.SCOPE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.tableCell(any<SinkEventAttributes>()) }
+
+        tableCellAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ABBRV]).isNull()
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.AXIS]).isNull()
+            assertThat(it[SinkEventAttributes.BGCOLOR]).isNull()
+            assertThat(it[SinkEventAttributes.COLSPAN]).isNull()
+            assertThat(it[SinkEventAttributes.HEADERS]).isNull()
+            assertThat(it[SinkEventAttributes.HEIGHT]).isNull()
+            assertThat(it[SinkEventAttributes.NOWRAP]).isNull()
+            assertThat(it[SinkEventAttributes.ROWSPAN]).isNull()
+            assertThat(it[SinkEventAttributes.SCOPE]).isNull()
+            assertThat(it[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).tableCell_()
-        verify(sink).tableRow_()
-        verify(sink).tableRows_()
-        verify(sink).table_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.tableCell_() }
+        verify { sink.tableRow_() }
+        verify { sink.tableRows_() }
+        verify { sink.table_() }
+
+        confirmVerified(sink)
     }
 }

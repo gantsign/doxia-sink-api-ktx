@@ -22,10 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -35,11 +38,19 @@ class DefinitionListItemTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val definitionListItemContainer = object : DefinitionListItemContainer {
             override val sink: Sink = sink
         }
+
+        val definitionListItemAttributesSlot = slot<SinkEventAttributes>()
+        val definitionAttributesSlot = slot<SinkEventAttributes>()
+        val definedTermAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.definitionListItem(capture(definitionListItemAttributesSlot)) } just Runs
+        every { sink.definition(capture(definitionAttributesSlot)) } just Runs
+        every { sink.definedTerm(capture(definedTermAttributesSlot)) } just Runs
 
         definitionListItemContainer.listItem {
             definition {
@@ -49,44 +60,59 @@ class DefinitionListItemTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).definitionListItem(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.definitionListItem(any()) }
+
+        definitionListItemAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).definition(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.definition(any()) }
+
+        definitionAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).definedTerm(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.definedTerm(any()) }
+
+        definedTermAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).definedTerm_()
-        verify(sink).definition_()
-        verify(sink).definitionListItem_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.definedTerm_() }
+        verify { sink.definition_() }
+        verify { sink.definitionListItem_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val definitionListItemContainer = object : DefinitionListItemContainer {
             override val sink: Sink = sink
         }
+
+        val definitionListItemAttributesSlot = slot<SinkEventAttributes>()
+        val definitionAttributesSlot = slot<SinkEventAttributes>()
+        val definedTermAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.definitionListItem(capture(definitionListItemAttributesSlot)) } just Runs
+        every { sink.definition(capture(definitionAttributesSlot)) } just Runs
+        every { sink.definedTerm(capture(definedTermAttributesSlot)) } just Runs
 
         definitionListItemContainer.listItem(
             id = "id1",
@@ -102,34 +128,41 @@ class DefinitionListItemTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).definitionListItem(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.definitionListItem(any()) }
+
+        definitionListItemAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).definition(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.definition(any()) }
+
+        definitionAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).definedTerm(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.definedTerm(any()) }
+
+        definedTermAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).definedTerm_()
-        verify(sink).definition_()
-        verify(sink).definitionListItem_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.definedTerm_() }
+        verify { sink.definition_() }
+        verify { sink.definitionListItem_() }
+
+        confirmVerified(sink)
     }
 }

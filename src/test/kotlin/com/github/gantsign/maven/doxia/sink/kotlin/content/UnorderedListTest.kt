@@ -22,10 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -35,11 +38,17 @@ class UnorderedListTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val unorderedListContainer = object : UnorderedListContainer {
             override val sink: Sink = sink
         }
+
+        val listAttributesSlot = slot<SinkEventAttributes>()
+        val listItemAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.list(capture(listAttributesSlot)) } just Runs
+        every { sink.listItem(capture(listItemAttributesSlot)) } just Runs
 
         unorderedListContainer.list {
             listItem {
@@ -47,35 +56,46 @@ class UnorderedListTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).list(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.list(any()) }
+
+        listAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).listItem(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.listItem(any()) }
+
+        listItemAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).listItem_()
-        verify(sink).list_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.listItem_() }
+        verify { sink.list_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val unorderedListContainer = object : UnorderedListContainer {
             override val sink: Sink = sink
         }
+
+        val listAttributesSlot = slot<SinkEventAttributes>()
+        val listItemAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.list(capture(listAttributesSlot)) } just Runs
+        every { sink.listItem(capture(listItemAttributesSlot)) } just Runs
 
         unorderedListContainer.list(
             id = "id1",
@@ -89,26 +109,30 @@ class UnorderedListTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).list(capture())
+        verify { sink.list(any()) }
 
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        listAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).listItem(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.listItem(any()) }
+
+        listItemAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).listItem_()
-        verify(sink).list_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.listItem_() }
+        verify { sink.list_() }
+
+        confirmVerified(sink)
     }
 }

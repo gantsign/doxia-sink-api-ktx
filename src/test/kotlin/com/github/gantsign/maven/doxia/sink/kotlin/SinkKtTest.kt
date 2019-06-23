@@ -19,10 +19,13 @@
  */
 package com.github.gantsign.maven.doxia.sink.kotlin
 
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -32,23 +35,31 @@ class SinkKtTest {
 
     @Test
     fun text() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.body(capture(attributesSlot)) } just Runs
+
         sink {
             body {
                 +"body1"
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).body(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.body(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).body_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.body_() }
+
+        confirmVerified(sink)
     }
 }

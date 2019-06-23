@@ -23,11 +23,13 @@ import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.NumberingStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -37,11 +39,19 @@ class NumberedListTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val numberedListContainer = object : NumberedListContainer {
             override val sink: Sink = sink
         }
+
+        val numberedListAttributesSlot = slot<SinkEventAttributes>()
+        val numberedListItemAttributesSlot = slot<SinkEventAttributes>()
+
+        every {
+            sink.numberedList(Sink.NUMBERING_DECIMAL, capture(numberedListAttributesSlot))
+        } just Runs
+        every { sink.numberedListItem(capture(numberedListItemAttributesSlot)) } just Runs
 
         numberedListContainer.numberedList(NumberingStyle.NUMBERING_DECIMAL) {
             listItem {
@@ -49,35 +59,48 @@ class NumberedListTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).numberedList(eq(Sink.NUMBERING_DECIMAL), capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.numberedList(Sink.NUMBERING_DECIMAL, any()) }
+
+        numberedListAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).numberedListItem(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.numberedListItem(any()) }
+
+        numberedListItemAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).numberedListItem_()
-        verify(sink).numberedList_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.numberedListItem_() }
+        verify { sink.numberedList_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val numberedListContainer = object : NumberedListContainer {
             override val sink: Sink = sink
         }
+
+        val numberedListAttributesSlot = slot<SinkEventAttributes>()
+        val numberedListItemAttributesSlot = slot<SinkEventAttributes>()
+
+        every {
+            sink.numberedList(Sink.NUMBERING_DECIMAL, capture(numberedListAttributesSlot))
+        } just Runs
+        every { sink.numberedListItem(capture(numberedListItemAttributesSlot)) } just Runs
 
         numberedListContainer.numberedList(
             numberingStyle = NumberingStyle.NUMBERING_DECIMAL,
@@ -92,26 +115,30 @@ class NumberedListTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).numberedList(eq(Sink.NUMBERING_DECIMAL), capture())
+        verify { sink.numberedList(Sink.NUMBERING_DECIMAL, any()) }
 
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        numberedListAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).numberedListItem(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.numberedListItem(any()) }
+
+        numberedListItemAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).numberedListItem_()
-        verify(sink).numberedList_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.numberedListItem_() }
+        verify { sink.numberedList_() }
+
+        confirmVerified(sink)
     }
 }

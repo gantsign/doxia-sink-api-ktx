@@ -22,10 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -36,11 +39,17 @@ class HeadTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val headContainer = object : HeadContainer {
             override val sink: Sink = sink
         }
+
+        val headAttributesSlot = slot<SinkEventAttributes>()
+        val titleAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.head(capture(headAttributesSlot)) } just Runs
+        every { sink.title(capture(titleAttributesSlot)) } just Runs
 
         headContainer.head {
             title {
@@ -48,32 +57,43 @@ class HeadTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).head(capture())
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.PROFILE]).isNull()
+        verify { sink.head(any()) }
+
+        headAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.PROFILE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).title(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.title(any()) }
+
+        titleAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).title_()
-        verify(sink).head_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.title_() }
+        verify { sink.head_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val headContainer = object : HeadContainer {
             override val sink: Sink = sink
         }
+
+        val headAttributesSlot = slot<SinkEventAttributes>()
+        val titleAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.head(capture(headAttributesSlot)) } just Runs
+        every { sink.title(capture(titleAttributesSlot)) } just Runs
 
         headContainer.head(
             lang = "lang2",
@@ -90,22 +110,27 @@ class HeadTest {
             }
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).head(capture())
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang2")
-            assertThat(firstValue[SinkEventAttributes.PROFILE]).isEqualTo("http://example.com http://example.com/url2")
+        verify { sink.head(any()) }
+
+        headAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang2")
+            assertThat(it[SinkEventAttributes.PROFILE]).isEqualTo("http://example.com http://example.com/url2")
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).title(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+
+        verify { sink.title(any()) }
+
+        titleAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verify(sink).text("body1")
-        verify(sink).title_()
-        verify(sink).head_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.title_() }
+        verify { sink.head_() }
+
+        confirmVerified(sink)
     }
 }

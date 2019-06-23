@@ -20,10 +20,13 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.get
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -33,44 +36,57 @@ class AuthorTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val authorContainer = object : AuthorContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.author(capture(attributesSlot)) } just Runs
 
         authorContainer.author {
             +"body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).author(capture())
-            assertThat(firstValue[SinkEventAttributes.EMAIL]).isNull()
+        verify { sink.author(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.EMAIL]).isNull()
         }
-        verify(sink).text("body1")
-        verify(sink).author_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.author_() }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val authorContainer = object : AuthorContainer {
             override val sink: Sink = sink
         }
 
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.author(capture(attributesSlot)) } just Runs
+
         authorContainer.author("email1") {
             +"body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).author(capture())
+        verify { sink.author(any()) }
 
-            assertThat(firstValue[SinkEventAttributes.EMAIL]).isEqualTo("email1")
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.EMAIL]).isEqualTo("email1")
         }
-        verify(sink).text("body1")
-        verify(sink).author_()
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("body1") }
+        verify { sink.author_() }
+
+        confirmVerified(sink)
     }
 }

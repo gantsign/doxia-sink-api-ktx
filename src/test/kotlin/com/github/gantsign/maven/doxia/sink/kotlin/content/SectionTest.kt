@@ -23,11 +23,13 @@ import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.VAlign
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -37,11 +39,17 @@ class SectionTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val sectionContainer = object : SectionContainer {
             override val sink: Sink = sink
         }
+
+        val sectionAttributesSlot = slot<SinkEventAttributes>()
+        val sectionTitleAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.section(1, capture(sectionAttributesSlot)) } just Runs
+        every { sink.sectionTitle(1, capture(sectionTitleAttributesSlot)) } just Runs
 
         sectionContainer.section(1) {
             title {
@@ -50,37 +58,48 @@ class SectionTest {
             +"body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).section(eq(1), capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.section(1, any()) }
+
+        sectionAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).sectionTitle(eq(1), capture())
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+
+        verify { sink.sectionTitle(1, any()) }
+
+        sectionTitleAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verify(sink).text("title1")
-        verify(sink).sectionTitle_(1)
-        verify(sink).text("body1")
-        verify(sink).section_(1)
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("title1") }
+        verify { sink.sectionTitle_(1) }
+        verify { sink.text("body1") }
+        verify { sink.section_(1) }
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val sectionContainer = object : SectionContainer {
             override val sink: Sink = sink
         }
+
+        val sectionAttributesSlot = slot<SinkEventAttributes>()
+        val sectionTitleAttributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.section(1, capture(sectionAttributesSlot)) } just Runs
+        every { sink.sectionTitle(1, capture(sectionTitleAttributesSlot)) } just Runs
 
         sectionContainer.section(
             level = 1,
@@ -103,27 +122,32 @@ class SectionTest {
             +"body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).section(eq(1), capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.section(1, any()) }
+
+        sectionAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).sectionTitle(eq(1), capture())
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isEqualTo("sub")
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id2")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class2")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("italic")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang2")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title2")
+
+        verify { sink.sectionTitle(1, any()) }
+
+        sectionTitleAttributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.VALIGN]).isEqualTo("sub")
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id2")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class2")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("italic")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang2")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title2")
         }
-        verify(sink).text("title1")
-        verify(sink).sectionTitle_(1)
-        verify(sink).text("body1")
-        verify(sink).section_(1)
-        verifyNoMoreInteractions(sink)
+
+        verify { sink.text("title1") }
+        verify { sink.sectionTitle_(1) }
+        verify { sink.text("body1") }
+        verify { sink.section_(1) }
+
+        confirmVerified(sink)
     }
 }

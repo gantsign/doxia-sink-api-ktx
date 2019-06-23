@@ -22,11 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -36,41 +38,51 @@ class FigureGraphicsTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val figureGraphicsContainer = object : FigureGraphicsContainer {
             override val sink: Sink = sink
         }
 
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.figureGraphics("src1", capture(attributesSlot)) } just Runs
+
         figureGraphicsContainer.figureGraphics("src1")
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).figureGraphics(eq("src1"), capture())
-            assertThat(firstValue[SinkEventAttributes.ALT]).isNull()
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
-            assertThat(firstValue[SinkEventAttributes.HEIGHT]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.BORDER]).isNull()
-            assertThat(firstValue[SinkEventAttributes.HSPACE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.VSPACE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ISMAP]).isNull()
-            assertThat(firstValue[SinkEventAttributes.USEMAP]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.figureGraphics("src1", any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALT]).isNull()
+            assertThat(it[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(it[SinkEventAttributes.HEIGHT]).isNull()
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.BORDER]).isNull()
+            assertThat(it[SinkEventAttributes.HSPACE]).isNull()
+            assertThat(it[SinkEventAttributes.VSPACE]).isNull()
+            assertThat(it[SinkEventAttributes.ISMAP]).isNull()
+            assertThat(it[SinkEventAttributes.USEMAP]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val figureGraphicsContainer = object : FigureGraphicsContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.figureGraphics("src1", capture(attributesSlot)) } just Runs
 
         figureGraphicsContainer.figureGraphics(
             src = "src1",
@@ -90,23 +102,25 @@ class FigureGraphicsTest {
             title = "title1"
         )
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).figureGraphics(eq("src1"), capture())
-            assertThat(firstValue[SinkEventAttributes.ALT]).isEqualTo("alt1")
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isEqualTo("width1")
-            assertThat(firstValue[SinkEventAttributes.HEIGHT]).isEqualTo("height1")
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isEqualTo("align1")
-            assertThat(firstValue[SinkEventAttributes.BORDER]).isEqualTo("border1")
-            assertThat(firstValue[SinkEventAttributes.HSPACE]).isEqualTo("hSpace1")
-            assertThat(firstValue[SinkEventAttributes.VSPACE]).isEqualTo("vSpace1")
-            assertThat(firstValue[SinkEventAttributes.ISMAP]).isEqualTo("isMap1")
-            assertThat(firstValue[SinkEventAttributes.USEMAP]).isEqualTo("useMap1")
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.figureGraphics("src1", any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALT]).isEqualTo("alt1")
+            assertThat(it[SinkEventAttributes.WIDTH]).isEqualTo("width1")
+            assertThat(it[SinkEventAttributes.HEIGHT]).isEqualTo("height1")
+            assertThat(it[SinkEventAttributes.ALIGN]).isEqualTo("align1")
+            assertThat(it[SinkEventAttributes.BORDER]).isEqualTo("border1")
+            assertThat(it[SinkEventAttributes.HSPACE]).isEqualTo("hSpace1")
+            assertThat(it[SinkEventAttributes.VSPACE]).isEqualTo("vSpace1")
+            assertThat(it[SinkEventAttributes.ISMAP]).isEqualTo("isMap1")
+            assertThat(it[SinkEventAttributes.USEMAP]).isEqualTo("useMap1")
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 }
