@@ -19,9 +19,9 @@
  */
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.confirmVerified
+import io.mockk.mockk
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.junit.Test
 
@@ -29,7 +29,7 @@ class PageBreakTest {
 
     @Test
     fun test() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>(relaxed = true)
 
         val pageBreakContainer = object : PageBreakContainer {
             override val sink: Sink = sink
@@ -37,7 +37,8 @@ class PageBreakTest {
 
         pageBreakContainer.pageBreak()
 
-        verify(sink).pageBreak()
-        verifyNoMoreInteractions(sink)
+        verify { sink.pageBreak() }
+
+        confirmVerified(sink)
     }
 }

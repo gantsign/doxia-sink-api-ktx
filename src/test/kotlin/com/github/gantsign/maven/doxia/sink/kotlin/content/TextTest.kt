@@ -24,11 +24,13 @@ import com.github.gantsign.maven.doxia.sink.kotlin.style.Decoration
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.VAlign
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -38,36 +40,46 @@ class TextTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val textContainer = object : TextContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.text("body1", capture(attributesSlot)) } just Runs
 
         textContainer.text {
             "body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).text(eq("body1"), capture())
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.DECORATION]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.text("body1", any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.VALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.DECORATION]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val textContainer = object : TextContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.text("body1", capture(attributesSlot)) } just Runs
 
         textContainer.text(
             vAlign = VAlign.SUB,
@@ -81,16 +93,18 @@ class TextTest {
             "body1"
         }
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).text(eq("body1"), capture())
-            assertThat(firstValue[SinkEventAttributes.VALIGN]).isEqualTo("sub")
-            assertThat(firstValue[SinkEventAttributes.DECORATION]).isEqualTo("line-through")
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.text("body1", any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.VALIGN]).isEqualTo("sub")
+            assertThat(it[SinkEventAttributes.DECORATION]).isEqualTo("line-through")
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 }

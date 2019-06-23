@@ -19,9 +19,9 @@
  */
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.confirmVerified
+import io.mockk.mockk
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.junit.Test
 
@@ -29,7 +29,7 @@ class DateTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink: Sink = mockk(relaxed = true)
 
         val dateContainer = object : DateContainer {
             override val sink: Sink = sink
@@ -39,27 +39,10 @@ class DateTest {
             +"body1"
         }
 
-        verify(sink).date()
-        verify(sink).text("body1")
-        verify(sink).date_()
-        verifyNoMoreInteractions(sink)
-    }
+        verify { sink.date() }
+        verify { sink.text("body1") }
+        verify { sink.date_() }
 
-    @Test
-    fun `with args`() {
-        val sink: Sink = mock()
-
-        val dateContainer = object : DateContainer {
-            override val sink: Sink = sink
-        }
-
-        dateContainer.date {
-            +"body1"
-        }
-
-        verify(sink).date()
-        verify(sink).text("body1")
-        verify(sink).date_()
-        verifyNoMoreInteractions(sink)
+        confirmVerified(sink)
     }
 }

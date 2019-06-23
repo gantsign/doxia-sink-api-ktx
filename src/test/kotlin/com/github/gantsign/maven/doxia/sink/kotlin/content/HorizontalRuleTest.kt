@@ -22,10 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -35,36 +38,46 @@ class HorizontalRuleTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val horizontalRuleContainer = object : HorizontalRuleContainer {
             override val sink: Sink = sink
         }
 
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.horizontalRule(capture(attributesSlot)) } just Runs
+
         horizontalRuleContainer.horizontalRule()
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).horizontalRule(capture())
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isNull()
-            assertThat(firstValue[SinkEventAttributes.NOSHADE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.SIZE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isNull()
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.horizontalRule(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALIGN]).isNull()
+            assertThat(it[SinkEventAttributes.NOSHADE]).isNull()
+            assertThat(it[SinkEventAttributes.SIZE]).isNull()
+            assertThat(it[SinkEventAttributes.WIDTH]).isNull()
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val horizontalRuleContainer = object : HorizontalRuleContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.horizontalRule(capture(attributesSlot)) } just Runs
 
         horizontalRuleContainer.horizontalRule(
             align = "align1",
@@ -78,18 +91,20 @@ class HorizontalRuleTest {
             title = "title1"
         )
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).horizontalRule(capture())
-            assertThat(firstValue[SinkEventAttributes.ALIGN]).isEqualTo("align1")
-            assertThat(firstValue[SinkEventAttributes.NOSHADE]).isEqualTo("noShade1")
-            assertThat(firstValue[SinkEventAttributes.SIZE]).isEqualTo("size1")
-            assertThat(firstValue[SinkEventAttributes.WIDTH]).isEqualTo("width1")
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.LANG]).isEqualTo("lang1")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.horizontalRule(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ALIGN]).isEqualTo("align1")
+            assertThat(it[SinkEventAttributes.NOSHADE]).isEqualTo("noShade1")
+            assertThat(it[SinkEventAttributes.SIZE]).isEqualTo("size1")
+            assertThat(it[SinkEventAttributes.WIDTH]).isEqualTo("width1")
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.LANG]).isEqualTo("lang1")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 }

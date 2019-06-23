@@ -22,10 +22,13 @@ package com.github.gantsign.maven.doxia.sink.kotlin.content
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import com.github.gantsign.maven.doxia.sink.kotlin.style.FontStyle
 import com.github.gantsign.maven.doxia.sink.kotlin.style.SimpleStyle
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import io.mockk.Runs
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
@@ -35,32 +38,42 @@ class LineBreakTest {
 
     @Test
     fun `no args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val lineBreakContainer = object : LineBreakContainer {
             override val sink: Sink = sink
         }
 
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.lineBreak(capture(attributesSlot)) } just Runs
+
         lineBreakContainer.lineBreak()
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).lineBreak(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isNull()
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isNull()
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isNull()
-            assertThat(firstValue[SinkEventAttributes.LANG]).isNull()
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isNull()
+        verify { sink.lineBreak(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 
     @Test
     fun `with args`() {
-        val sink: Sink = mock()
+        val sink = mockk<Sink>()
 
         val lineBreakContainer = object : LineBreakContainer {
             override val sink: Sink = sink
         }
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.lineBreak(capture(attributesSlot)) } just Runs
 
         lineBreakContainer.lineBreak(
             id = "id1",
@@ -69,13 +82,15 @@ class LineBreakTest {
             title = "title1"
         )
 
-        argumentCaptor<SinkEventAttributes>().apply {
-            verify(sink).lineBreak(capture())
-            assertThat(firstValue[SinkEventAttributes.ID]).isEqualTo("id1")
-            assertThat(firstValue[SinkEventAttributes.CLASS]).isEqualTo("class1")
-            assertThat(firstValue[SinkEventAttributes.STYLE]).isEqualTo("bold")
-            assertThat(firstValue[SinkEventAttributes.TITLE]).isEqualTo("title1")
+        verify { sink.lineBreak(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isEqualTo("id1")
+            assertThat(it[SinkEventAttributes.CLASS]).isEqualTo("class1")
+            assertThat(it[SinkEventAttributes.STYLE]).isEqualTo("bold")
+            assertThat(it[SinkEventAttributes.TITLE]).isEqualTo("title1")
         }
-        verifyNoMoreInteractions(sink)
+
+        confirmVerified(sink)
     }
 }
