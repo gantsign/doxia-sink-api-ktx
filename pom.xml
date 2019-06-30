@@ -33,7 +33,7 @@
     <kotlin.version>1.2.71</kotlin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <mockk.version>1.9.3.kotlin12</mockk.version>
+    <mockk.version>1.9.3</mockk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.26</slf4j.version>
