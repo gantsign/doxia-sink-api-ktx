@@ -34,7 +34,37 @@ import org.junit.Test
 class SinkKtTest {
 
     @Test
-    fun text() {
+    fun text_sinkKt() {
+        val sink = mockk<Sink>(relaxed = true)
+
+        val attributesSlot = slot<SinkEventAttributes>()
+
+        every { sink.body(capture(attributesSlot)) } just Runs
+
+        SinkKt(sink)() {
+            body {
+                +"body1"
+            }
+        }
+
+        verify { sink.body(any()) }
+
+        attributesSlot.captured.also {
+            assertThat(it[SinkEventAttributes.ID]).isNull()
+            assertThat(it[SinkEventAttributes.CLASS]).isNull()
+            assertThat(it[SinkEventAttributes.STYLE]).isNull()
+            assertThat(it[SinkEventAttributes.LANG]).isNull()
+            assertThat(it[SinkEventAttributes.TITLE]).isNull()
+        }
+
+        verify { sink.text("body1") }
+        verify { sink.body_() }
+
+        confirmVerified(sink)
+    }
+
+    @Test
+    fun text_sink() {
         val sink = mockk<Sink>(relaxed = true)
 
         val attributesSlot = slot<SinkEventAttributes>()
