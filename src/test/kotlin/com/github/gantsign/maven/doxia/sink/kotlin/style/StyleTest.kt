@@ -22,7 +22,7 @@ package com.github.gantsign.maven.doxia.sink.kotlin.style
 import com.github.gantsign.maven.doxia.sink.kotlin.get
 import org.apache.maven.doxia.sink.SinkEventAttributes
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class StyleTest {
 

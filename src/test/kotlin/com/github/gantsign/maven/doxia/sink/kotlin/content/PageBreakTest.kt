@@ -23,7 +23,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
 import org.apache.maven.doxia.sink.Sink
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class PageBreakTest {
 
