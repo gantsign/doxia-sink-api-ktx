@@ -25,6 +25,13 @@ import org.apache.maven.doxia.sink.Sink
 
 class SinkKt(override val sink: Sink) : DoxiaContent(), HeadContainer, BodyContainer {
 
+    @Deprecated(
+        message = "To be removed",
+        replaceWith = ReplaceWith(
+            expression = "Sink.invoke()",
+            imports = ["org.apache.maven.doxia.sink.Sink"]
+        )
+    )
     operator fun invoke(init: SinkKt.() -> Unit) = init(this)
 }
 
