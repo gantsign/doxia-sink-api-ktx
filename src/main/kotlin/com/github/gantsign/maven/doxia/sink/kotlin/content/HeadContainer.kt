@@ -20,9 +20,9 @@
 package com.github.gantsign.maven.doxia.sink.kotlin.content
 
 import com.github.gantsign.maven.doxia.sink.kotlin.internal.attributesOf
+import java.net.URL
 import org.apache.maven.doxia.sink.Sink
 import org.apache.maven.doxia.sink.SinkEventAttributes
-import java.net.URL
 
 interface HeadContainer {
     val sink: Sink
