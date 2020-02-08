@@ -15,5 +15,6 @@ gpg --fast-import .travis/codesigning.asc
     --settings .travis/settings.xml \
     -P publish-artifacts,sign-artifacts,ossrh-deploy \
     -DskipTests \
+    "-Drevision=${TRAVIS_TAG:-development-SNAPSHOT}" \
     --batch-mode \
     --show-version
