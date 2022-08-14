@@ -17,6 +17,8 @@
  * limitations under the License.
  * #L%
  */
+@file:Suppress("ktlint:filename")
+
 package com.github.gantsign.maven.doxia.sink.kotlin
 
 import org.apache.maven.doxia.sink.SinkEventAttributes
