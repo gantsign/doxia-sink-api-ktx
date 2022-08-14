@@ -39,7 +39,7 @@
     <doxia.version>1.11.1</doxia.version>
     <java.require.version>11</java.require.version>
     <jdeps.multiRelease>11</jdeps.multiRelease>
-    <kotlin.version>1.3.61</kotlin.version>
+    <kotlin.version>1.6.21</kotlin.version>
     <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
     <maven.compiler.release>8</maven.compiler.release>
     <mockk.version>1.9.3</mockk.version>
