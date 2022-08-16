@@ -25,7 +25,14 @@ jobs:
           ${{ secrets.GPG_KEY }}
           EOF
       - name: Deploy with Maven
-        run: .github/scripts/deploy.sh
+        run: |
+          ./mvnw deploy \
+              --settings .github/maven/settings.xml \
+              -P publish-artifacts,sign-artifacts,ossrh-deploy \
+              -DskipTests \
+              "-Drevision=${GIT_TAG:-development-SNAPSHOT}" \
+              --batch-mode \
+              --show-version
         env:
           OSSRH_USER: ${{ secrets.OSSRH_USER }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
