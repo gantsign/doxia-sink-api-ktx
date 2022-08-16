@@ -7,11 +7,15 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/maven-build.yml
+    uses: gantsign/workflows/.github/workflows/maven-build.yml@v1
+    with:
+      java-version: '11'
 
   deploy:
     name: Deploy
     needs: build
     if: github.repository == 'gantsign/doxia-sink-api-ktx'
-    uses: ./.github/workflows/maven-deploy.yml
+    uses: gantsign/workflows/.github/workflows/maven-deploy.yml@v1
+    with:
+      java-version: '11'
     secrets: inherit
