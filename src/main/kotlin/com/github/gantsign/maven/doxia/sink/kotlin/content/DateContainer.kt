@@ -24,7 +24,6 @@ import org.apache.maven.doxia.sink.Sink
 interface DateContainer {
     val sink: Sink
 
-    @JvmDefault
     fun date(init: Date.() -> Unit) {
         sink.date()
         init(Date(sink))

@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface HorizontalRuleContainer {
     val sink: Sink
 
-    @JvmDefault
     fun horizontalRule(
         align: String = "",
         noShade: String = "",

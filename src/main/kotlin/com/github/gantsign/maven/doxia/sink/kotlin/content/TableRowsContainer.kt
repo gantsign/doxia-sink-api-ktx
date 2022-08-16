@@ -25,7 +25,6 @@ import org.apache.maven.doxia.sink.Sink
 interface TableRowsContainer {
     val sink: Sink
 
-    @JvmDefault
     fun tableRows(
         grid: Boolean = false,
         vararg justification: Justify = emptyArray(),

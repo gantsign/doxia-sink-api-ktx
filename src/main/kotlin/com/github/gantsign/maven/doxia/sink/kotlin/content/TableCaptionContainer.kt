@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface TableCaptionContainer {
     val sink: Sink
 
-    @JvmDefault
     fun tableCaption(
         align: String = "",
         id: String = "",

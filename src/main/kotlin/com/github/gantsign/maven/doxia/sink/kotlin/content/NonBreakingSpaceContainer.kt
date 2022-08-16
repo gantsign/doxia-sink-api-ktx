@@ -24,7 +24,6 @@ import org.apache.maven.doxia.sink.Sink
 interface NonBreakingSpaceContainer {
     val sink: Sink
 
-    @JvmDefault
     fun nonBreakingSpace() {
         sink.nonBreakingSpace()
     }

@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface FigureCaptionContainer {
     val sink: Sink
 
-    @JvmDefault
     fun caption(
         id: String = "",
         cssClass: String = "",

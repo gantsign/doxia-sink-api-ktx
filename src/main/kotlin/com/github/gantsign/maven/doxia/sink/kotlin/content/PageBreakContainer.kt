@@ -24,7 +24,6 @@ import org.apache.maven.doxia.sink.Sink
 interface PageBreakContainer {
     val sink: Sink
 
-    @JvmDefault
     fun pageBreak() {
         sink.pageBreak()
     }

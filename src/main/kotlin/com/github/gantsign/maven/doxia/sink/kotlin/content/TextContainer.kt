@@ -29,7 +29,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface TextContainer {
     val sink: Sink
 
-    @JvmDefault
     fun text(
         vAlign: VAlign? = null,
         decoration: Decoration? = null,
@@ -54,7 +53,6 @@ interface TextContainer {
         )
     }
 
-    @JvmDefault
     operator fun String.unaryPlus() {
         sink.text(this)
     }
