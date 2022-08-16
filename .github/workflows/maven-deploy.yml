@@ -21,10 +21,15 @@ jobs:
           server-id: ossrh
           server-username: OSSRH_USER
           server-password: OSSRH_TOKEN
+      - name: Cache local Maven repository
+        uses: gantsign/maven-periodic-cache-action@v1
+        with:
+          key-suffix: '-deploy'
       - name: Deploy with Maven
         run: |
           ./mvnw deploy \
               -P publish-artifacts,sign-artifacts,ossrh-deploy \
+              -Dmaven.install.skip=true \
               -DskipTests \
               "-Drevision=${GIT_TAG:-development-SNAPSHOT}" \
               --batch-mode \

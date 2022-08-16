@@ -17,9 +17,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '11'
+      - name: Cache local Maven repository
+        uses: gantsign/maven-periodic-cache-action@v1
       - name: Build with Maven
         run: |
-          ./mvnw install \
+          ./mvnw package \
               "-Drevision=${GIT_TAG:-development-SNAPSHOT}" \
               --batch-mode \
               --show-version \
