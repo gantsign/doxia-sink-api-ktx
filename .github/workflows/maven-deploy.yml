@@ -20,10 +20,12 @@ jobs:
           distribution: temurin
           java-version: '11'
           gpg-private-key: ${{ secrets.GPG_KEY }}
+          server-id: ossrh
+          server-username: OSSRH_USER
+          server-password: OSSRH_TOKEN
       - name: Deploy with Maven
         run: |
           ./mvnw deploy \
-              --settings .github/maven/settings.xml \
               -P publish-artifacts,sign-artifacts,ossrh-deploy \
               -DskipTests \
               "-Drevision=${GIT_TAG:-development-SNAPSHOT}" \
