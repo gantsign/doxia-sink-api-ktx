@@ -6,4 +6,6 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/maven-build.yml
+    uses: gantsign/workflows/.github/workflows/maven-build.yml@v1
+    with:
+      java-version: '11'
