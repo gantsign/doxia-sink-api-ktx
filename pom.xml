@@ -189,10 +189,6 @@
                 </bannedPlugins>
                 <requireNoRepositories>
                   <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead)</message>
-                  <allowedPluginRepositories>
-                    <!-- jcenter is only required for the Dokka plugin during the build -->
-                    <repository>jcenter</repository>
-                  </allowedPluginRepositories>
                 </requireNoRepositories>
                 <banDuplicateClasses>
                   <findAllDuplicates>true</findAllDuplicates>
@@ -388,14 +384,6 @@
     <system>Travis CI</system>
     <url>https://travis-ci.org/gantsign/doxia-sink-api-ktx</url>
   </ciManagement>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>jcenter</id>
-      <name>JCenter</name>
-      <url>https://jcenter.bintray.com/</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <distributionManagement>
     <snapshotRepository>
