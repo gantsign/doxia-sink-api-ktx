@@ -5,8 +5,6 @@ env:
   JAVA_TOOL_OPTIONS: >-
     -XX:TieredStopAtLevel=1
     -XX:+UseParallelGC
-    -Dstyle.color=always
-    -Djansi.force=true
 jobs:
   deploy:
     name: Maven deploy
@@ -30,7 +28,8 @@ jobs:
               -DskipTests \
               "-Drevision=${GIT_TAG:-development-SNAPSHOT}" \
               --batch-mode \
-              --show-version
+              --show-version \
+              -Dstyle.color=always
         env:
           OSSRH_USER: ${{ secrets.OSSRH_USER }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
