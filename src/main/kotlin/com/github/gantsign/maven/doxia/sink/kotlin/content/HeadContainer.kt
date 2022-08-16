@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface HeadContainer {
     val sink: Sink
 
-    @JvmDefault
     fun head(
         lang: String = "",
         profile: List<URL> = listOf(),

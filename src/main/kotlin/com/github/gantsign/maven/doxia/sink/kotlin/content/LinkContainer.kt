@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface LinkContainer {
     val sink: Sink
 
-    @JvmDefault
     fun link(
         name: String,
         id: String = "",

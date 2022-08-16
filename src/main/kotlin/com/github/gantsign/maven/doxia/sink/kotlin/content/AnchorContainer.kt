@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface AnchorContainer {
     val sink: Sink
 
-    @JvmDefault
     fun anchor(
         name: String,
         id: String = "",

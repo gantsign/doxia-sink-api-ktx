@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface BodyContainer {
     val sink: Sink
 
-    @JvmDefault
     fun body(
         id: String = "",
         cssClass: String = "",

@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface VerbatimContainer {
     val sink: Sink
 
-    @JvmDefault
     fun verbatim(
         decoration: String = "",
         align: String = "",

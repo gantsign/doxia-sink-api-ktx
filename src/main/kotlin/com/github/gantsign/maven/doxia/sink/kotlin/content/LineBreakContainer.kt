@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface LineBreakContainer {
     val sink: Sink
 
-    @JvmDefault
     fun lineBreak(
         id: String = "",
         cssClass: String = "",

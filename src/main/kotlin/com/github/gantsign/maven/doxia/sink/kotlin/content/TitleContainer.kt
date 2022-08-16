@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface TitleContainer {
     val sink: Sink
 
-    @JvmDefault
     fun title(
         id: String = "",
         cssClass: String = "",

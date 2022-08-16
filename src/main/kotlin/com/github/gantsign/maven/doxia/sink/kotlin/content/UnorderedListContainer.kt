@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface UnorderedListContainer {
     val sink: Sink
 
-    @JvmDefault
     fun list(
         id: String = "",
         cssClass: String = "",

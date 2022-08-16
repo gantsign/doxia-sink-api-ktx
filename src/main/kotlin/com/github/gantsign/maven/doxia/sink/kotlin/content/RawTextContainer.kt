@@ -24,7 +24,6 @@ import org.apache.maven.doxia.sink.Sink
 interface RawTextContainer {
     val sink: Sink
 
-    @JvmDefault
     fun rawText(supplier: () -> String) {
         sink.rawText(supplier())
     }

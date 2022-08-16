@@ -28,7 +28,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface NumberedListContainer {
     val sink: Sink
 
-    @JvmDefault
     fun numberedList(
         numberingStyle: NumberingStyle,
         id: String = "",

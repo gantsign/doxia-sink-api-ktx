@@ -24,7 +24,6 @@ import org.apache.maven.doxia.sink.Sink
 interface CommentContainer {
     val sink: Sink
 
-    @JvmDefault
     fun comment(supplier: () -> String) {
         sink.comment(supplier())
     }

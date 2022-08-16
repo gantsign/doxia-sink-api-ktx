@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface TableHeaderCellContainer {
     val sink: Sink
 
-    @JvmDefault
     fun tableHeaderCell(
         abbvr: String = "",
         align: String = "",

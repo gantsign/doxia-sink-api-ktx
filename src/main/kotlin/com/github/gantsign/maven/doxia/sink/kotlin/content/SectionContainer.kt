@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface SectionContainer {
     val sink: Sink
 
-    @JvmDefault
     fun section(
         level: Int,
         id: String = "",

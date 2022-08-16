@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface FigureContainer {
     val sink: Sink
 
-    @JvmDefault
     fun figure(
         id: String = "",
         cssClass: String = "",

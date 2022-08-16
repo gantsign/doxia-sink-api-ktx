@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface TableContainer {
     val sink: Sink
 
-    @JvmDefault
     fun table(
         align: String = "",
         bgColor: String = "",

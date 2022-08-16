@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface ParagraphContainer {
     val sink: Sink
 
-    @JvmDefault
     fun paragraph(
         align: String = "",
         id: String = "",

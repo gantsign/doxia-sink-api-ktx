@@ -27,7 +27,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface DefinitionContainer {
     val sink: Sink
 
-    @JvmDefault
     fun definition(
         id: String = "",
         cssClass: String = "",
