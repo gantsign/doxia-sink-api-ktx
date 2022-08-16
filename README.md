@@ -2,7 +2,7 @@
 
 [![Release](https://github.com/gantsign/doxia-sink-api-ktx/workflows/Build/badge.svg)](https://github.com/gantsign/doxia-sink-api-ktx/actions?query=workflow%3ABuild)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.gantsign.maven.doxia/doxia-sink-api-ktx/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.gantsign.maven.doxia/doxia-sink-api-ktx)
-[![codecov](https://codecov.io/gh/gantsign/doxia-sink-api-ktx/branch/master/graph/badge.svg)](https://codecov.io/gh/gantsign/doxia-sink-api-ktx)
+[![codecov](https://codecov.io/gh/gantsign/doxia-sink-api-ktx/branch/main/graph/badge.svg)](https://codecov.io/gh/gantsign/doxia-sink-api-ktx)
 [![Known Vulnerabilities](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx/badge.svg)](https://snyk.io/test/github/gantsign/doxia-sink-api-ktx)
 
 Kotlin extensions for the [Apache Doxia](https://maven.apache.org/doxia/) is a
