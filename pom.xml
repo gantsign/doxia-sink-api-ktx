@@ -36,7 +36,7 @@
   <description>A kotlin DSL for outputting documentation using Doxia.</description>
 
   <properties>
-    <doxia.version>1.11.1</doxia.version>
+    <doxia.version>1.12.0</doxia.version>
     <java.require.version>11</java.require.version>
     <jdeps.multiRelease>11</jdeps.multiRelease>
     <kotlin.version>1.6.21</kotlin.version>
