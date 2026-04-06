@@ -36,7 +36,7 @@ interface TableRowContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: TableRow.() -> Unit
+        init: TableRow.() -> Unit,
     ) {
         sink.tableRow(
             attributesOf(
@@ -47,8 +47,8 @@ interface TableRowContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(TableRow(sink))
         sink.tableRow_()

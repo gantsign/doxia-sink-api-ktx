@@ -37,7 +37,7 @@ interface TextContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        supplier: () -> String
+        supplier: () -> String,
     ) {
         sink.text(
             supplier(),
@@ -48,8 +48,8 @@ interface TextContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
     }
 

@@ -31,15 +31,15 @@ interface LineBreakContainer {
         id: String = "",
         cssClass: String = "",
         style: Style? = null,
-        title: String = ""
+        title: String = "",
     ) {
         sink.lineBreak(
             attributesOf(
                 SinkEventAttributes.ID to id,
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
     }
 }

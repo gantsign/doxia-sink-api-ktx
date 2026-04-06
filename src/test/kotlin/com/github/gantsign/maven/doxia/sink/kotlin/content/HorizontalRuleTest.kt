@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class HorizontalRuleTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>()
 
-        val horizontalRuleContainer = object : HorizontalRuleContainer {
-            override val sink: Sink = sink
-        }
+        val horizontalRuleContainer =
+            object : HorizontalRuleContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -71,9 +71,10 @@ class HorizontalRuleTest {
     fun `with args`() {
         val sink = mockk<Sink>()
 
-        val horizontalRuleContainer = object : HorizontalRuleContainer {
-            override val sink: Sink = sink
-        }
+        val horizontalRuleContainer =
+            object : HorizontalRuleContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -88,7 +89,7 @@ class HorizontalRuleTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         )
 
         verify { sink.horizontalRule(any()) }

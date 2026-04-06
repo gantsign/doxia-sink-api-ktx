@@ -34,7 +34,7 @@ interface AnchorContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Anchor.() -> Unit
+        init: Anchor.() -> Unit,
     ) {
         sink.anchor(
             name,
@@ -43,8 +43,8 @@ interface AnchorContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Anchor(sink))
         sink.anchor_()

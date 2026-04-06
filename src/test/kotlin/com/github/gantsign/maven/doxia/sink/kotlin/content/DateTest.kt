@@ -26,14 +26,14 @@ import org.apache.maven.doxia.sink.Sink
 import org.junit.jupiter.api.Test
 
 class DateTest {
-
     @Test
     fun `no args`() {
         val sink: Sink = mockk(relaxed = true)
 
-        val dateContainer = object : DateContainer {
-            override val sink: Sink = sink
-        }
+        val dateContainer =
+            object : DateContainer {
+                override val sink: Sink = sink
+            }
 
         dateContainer.date {
             +"body1"

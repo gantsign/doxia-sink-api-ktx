@@ -33,7 +33,7 @@ interface BodyContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Body.() -> Unit
+        init: Body.() -> Unit,
     ) {
         sink.body(
             attributesOf(
@@ -41,8 +41,8 @@ interface BodyContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Body(sink))
         sink.body_()

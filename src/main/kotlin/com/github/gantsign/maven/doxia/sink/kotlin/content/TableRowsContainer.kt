@@ -28,7 +28,7 @@ interface TableRowsContainer {
     fun tableRows(
         grid: Boolean = false,
         vararg justification: Justify = emptyArray(),
-        init: TableRows.() -> Unit
+        init: TableRows.() -> Unit,
     ) {
         sink.tableRows(justification.map(Justify::value).toIntArray(), grid)
         init(TableRows(sink))

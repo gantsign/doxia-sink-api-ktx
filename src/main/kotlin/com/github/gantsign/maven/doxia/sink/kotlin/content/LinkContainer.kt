@@ -34,7 +34,7 @@ interface LinkContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Link.() -> Unit
+        init: Link.() -> Unit,
     ) {
         sink.link(
             name,
@@ -43,8 +43,8 @@ interface LinkContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Link(sink))
         sink.link_()

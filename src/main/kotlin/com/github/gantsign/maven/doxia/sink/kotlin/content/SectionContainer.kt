@@ -34,7 +34,7 @@ interface SectionContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Section.() -> Unit
+        init: Section.() -> Unit,
     ) {
         sink.section(
             level,
@@ -43,8 +43,8 @@ interface SectionContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Section(sink, level))
         sink.section_(level)

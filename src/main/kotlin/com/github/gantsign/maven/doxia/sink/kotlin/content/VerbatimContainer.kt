@@ -36,7 +36,7 @@ interface VerbatimContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Verbatim.() -> Unit
+        init: Verbatim.() -> Unit,
     ) {
         sink.verbatim(
             attributesOf(
@@ -47,8 +47,8 @@ interface VerbatimContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Verbatim(sink))
         sink.verbatim_()

@@ -33,7 +33,7 @@ interface DefinedTermContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: DefinedTerm.() -> Unit
+        init: DefinedTerm.() -> Unit,
     ) {
         sink.definedTerm(
             attributesOf(
@@ -41,8 +41,8 @@ interface DefinedTermContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(DefinedTerm(sink))
         sink.definedTerm_()

@@ -22,5 +22,5 @@ package com.github.gantsign.maven.doxia.sink.kotlin.style
 enum class Decoration(val value: String) {
     UNDERLINE("underline"),
     OVERLINE("overline"),
-    LINE_THROUGH("line-through")
+    LINE_THROUGH("line-through"),
 }

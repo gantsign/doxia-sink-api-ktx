@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class DefinitionListTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val definitionListContainer = object : DefinitionListContainer {
-            override val sink: Sink = sink
-        }
+        val definitionListContainer =
+            object : DefinitionListContainer {
+                override val sink: Sink = sink
+            }
 
         val definitionListAttributesSlot = slot<SinkEventAttributes>()
         val definitionListItemAttributesSlot = slot<SinkEventAttributes>()
@@ -117,9 +117,10 @@ class DefinitionListTest {
     fun `with args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val definitionListContainer = object : DefinitionListContainer {
-            override val sink: Sink = sink
-        }
+        val definitionListContainer =
+            object : DefinitionListContainer {
+                override val sink: Sink = sink
+            }
 
         val definitionListAttributesSlot = slot<SinkEventAttributes>()
         val definitionListItemAttributesSlot = slot<SinkEventAttributes>()
@@ -136,7 +137,7 @@ class DefinitionListTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             listItem {
                 definition {

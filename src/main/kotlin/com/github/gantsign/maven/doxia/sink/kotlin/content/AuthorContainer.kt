@@ -26,11 +26,14 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 interface AuthorContainer {
     val sink: Sink
 
-    fun author(email: String = "", init: Author.() -> Unit) {
+    fun author(
+        email: String = "",
+        init: Author.() -> Unit,
+    ) {
         sink.author(
             attributesOf(
-                SinkEventAttributes.EMAIL to email
-            )
+                SinkEventAttributes.EMAIL to email,
+            ),
         )
         init(Author(sink))
         sink.author_()

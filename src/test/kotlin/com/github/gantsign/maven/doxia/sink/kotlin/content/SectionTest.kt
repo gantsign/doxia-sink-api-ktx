@@ -36,14 +36,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class SectionTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val sectionContainer = object : SectionContainer {
-            override val sink: Sink = sink
-        }
+        val sectionContainer =
+            object : SectionContainer {
+                override val sink: Sink = sink
+            }
 
         val sectionAttributesSlot = slot<SinkEventAttributes>()
         val sectionTitleAttributesSlot = slot<SinkEventAttributes>()
@@ -91,9 +91,10 @@ class SectionTest {
     fun `with args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val sectionContainer = object : SectionContainer {
-            override val sink: Sink = sink
-        }
+        val sectionContainer =
+            object : SectionContainer {
+                override val sink: Sink = sink
+            }
 
         val sectionAttributesSlot = slot<SinkEventAttributes>()
         val sectionTitleAttributesSlot = slot<SinkEventAttributes>()
@@ -107,7 +108,7 @@ class SectionTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             title(
                 vAlign = VAlign.SUB,
@@ -115,7 +116,7 @@ class SectionTest {
                 cssClass = "class2",
                 style = SimpleStyle(FontStyle.ITALIC),
                 lang = "lang2",
-                title = "title2"
+                title = "title2",
             ) {
                 +"title1"
             }

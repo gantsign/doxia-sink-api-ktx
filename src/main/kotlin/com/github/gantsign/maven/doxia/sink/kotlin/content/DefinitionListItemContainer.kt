@@ -33,7 +33,7 @@ interface DefinitionListItemContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: DefinitionListItem.() -> Unit
+        init: DefinitionListItem.() -> Unit,
     ) {
         sink.definitionListItem(
             attributesOf(
@@ -41,8 +41,8 @@ interface DefinitionListItemContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(DefinitionListItem(sink))
         sink.definitionListItem_()

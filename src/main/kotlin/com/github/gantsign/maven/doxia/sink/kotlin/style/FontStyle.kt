@@ -22,5 +22,5 @@ package com.github.gantsign.maven.doxia.sink.kotlin.style
 enum class FontStyle(val value: String) {
     ITALIC("italic"),
     BOLD("bold"),
-    MONOSPACED("monospaced")
+    MONOSPACED("monospaced"),
 }

@@ -21,5 +21,5 @@ package com.github.gantsign.maven.doxia.sink.kotlin.style
 
 enum class VAlign(val value: String) {
     SUB("sub"),
-    SUP("sup")
+    SUP("sup"),
 }

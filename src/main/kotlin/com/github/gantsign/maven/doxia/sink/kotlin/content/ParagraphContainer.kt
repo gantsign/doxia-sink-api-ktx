@@ -34,7 +34,7 @@ interface ParagraphContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Paragraph.() -> Unit
+        init: Paragraph.() -> Unit,
     ) {
         sink.paragraph(
             attributesOf(
@@ -43,8 +43,8 @@ interface ParagraphContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Paragraph(sink))
         sink.paragraph_()

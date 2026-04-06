@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class UnorderedListTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val unorderedListContainer = object : UnorderedListContainer {
-            override val sink: Sink = sink
-        }
+        val unorderedListContainer =
+            object : UnorderedListContainer {
+                override val sink: Sink = sink
+            }
 
         val listAttributesSlot = slot<SinkEventAttributes>()
         val listItemAttributesSlot = slot<SinkEventAttributes>()
@@ -87,9 +87,10 @@ class UnorderedListTest {
     fun `with args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val unorderedListContainer = object : UnorderedListContainer {
-            override val sink: Sink = sink
-        }
+        val unorderedListContainer =
+            object : UnorderedListContainer {
+                override val sink: Sink = sink
+            }
 
         val listAttributesSlot = slot<SinkEventAttributes>()
         val listItemAttributesSlot = slot<SinkEventAttributes>()
@@ -102,7 +103,7 @@ class UnorderedListTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             listItem {
                 +"body1"

@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class DefinedTermTest {
-
     @Test
     fun `no args`() {
         val sink: Sink = mockk(relaxed = true)
 
-        val definedTermContainer = object : DefinedTermContainer {
-            override val sink: Sink = sink
-        }
+        val definedTermContainer =
+            object : DefinedTermContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -72,9 +72,10 @@ class DefinedTermTest {
     fun `with args`() {
         val sink: Sink = mockk(relaxed = true)
 
-        val definedTermContainer = object : DefinedTermContainer {
-            override val sink: Sink = sink
-        }
+        val definedTermContainer =
+            object : DefinedTermContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -85,7 +86,7 @@ class DefinedTermTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             +"body1"
         }

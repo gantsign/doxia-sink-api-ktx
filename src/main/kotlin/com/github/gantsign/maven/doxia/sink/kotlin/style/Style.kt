@@ -33,7 +33,6 @@ class SimpleStyle private constructor(override val value: String) : Style() {
 
 @Suppress("unused")
 class CssStyle(private val properties: Map<String, String>) : Style() {
-
     constructor(vararg properties: Pair<String, String>) : this(mapOf(*properties))
 
     override val value: SinkEventAttributes

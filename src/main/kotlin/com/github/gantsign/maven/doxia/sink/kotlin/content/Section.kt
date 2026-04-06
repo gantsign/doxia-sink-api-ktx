@@ -29,7 +29,6 @@ import org.apache.maven.doxia.sink.SinkEventAttributes
 class Section(override val sink: Sink, private val level: Int) :
     DoxiaContent(),
     BlockContentContainer {
-
     fun title(
         vAlign: VAlign? = null,
         id: String = "",
@@ -37,7 +36,7 @@ class Section(override val sink: Sink, private val level: Int) :
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: SectionTitle.() -> Unit
+        init: SectionTitle.() -> Unit,
     ) {
         sink.sectionTitle(
             level,
@@ -47,8 +46,8 @@ class Section(override val sink: Sink, private val level: Int) :
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(SectionTitle(sink))
         sink.sectionTitle_(level)

@@ -33,7 +33,7 @@ interface FigureCaptionContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: FigureCaption.() -> Unit
+        init: FigureCaption.() -> Unit,
     ) {
         sink.figureCaption(
             attributesOf(
@@ -41,8 +41,8 @@ interface FigureCaptionContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(FigureCaption(sink))
         sink.figureCaption_()

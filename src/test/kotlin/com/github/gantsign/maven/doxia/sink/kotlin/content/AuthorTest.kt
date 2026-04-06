@@ -33,14 +33,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class AuthorTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val authorContainer = object : AuthorContainer {
-            override val sink: Sink = sink
-        }
+        val authorContainer =
+            object : AuthorContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -66,9 +66,10 @@ class AuthorTest {
     fun `with args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val authorContainer = object : AuthorContainer {
-            override val sink: Sink = sink
-        }
+        val authorContainer =
+            object : AuthorContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
