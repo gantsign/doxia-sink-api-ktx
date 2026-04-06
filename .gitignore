@@ -422,3 +422,6 @@ $RECYCLE.BIN/
 # Non-java project
 /.idea/checkstyle-idea.xml
 /.idea/google-java-format.xml
+
+# Devpod
+.devpod-internal
