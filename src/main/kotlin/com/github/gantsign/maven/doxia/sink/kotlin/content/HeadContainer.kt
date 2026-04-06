@@ -30,15 +30,16 @@ interface HeadContainer {
     fun head(
         lang: String = "",
         profile: List<URL> = listOf(),
-        init: Head.() -> Unit
+        init: Head.() -> Unit,
     ) {
         sink.head(
             attributesOf(
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.PROFILE to profile.joinToString(
-                    separator = " "
-                )
-            )
+                SinkEventAttributes.PROFILE to
+                    profile.joinToString(
+                        separator = " ",
+                    ),
+            ),
         )
         init(Head(sink))
         sink.head_()

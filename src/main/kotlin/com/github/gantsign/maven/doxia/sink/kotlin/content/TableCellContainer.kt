@@ -45,7 +45,7 @@ interface TableCellContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: TableCell.() -> Unit
+        init: TableCell.() -> Unit,
     ) {
         sink.tableCell(
             attributesOf(
@@ -65,8 +65,8 @@ interface TableCellContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(TableCell(sink))
         sink.tableCell_()

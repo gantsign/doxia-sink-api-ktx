@@ -33,7 +33,7 @@ interface DefinitionContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Definition.() -> Unit
+        init: Definition.() -> Unit,
     ) {
         sink.definition(
             attributesOf(
@@ -41,8 +41,8 @@ interface DefinitionContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Definition(sink))
         sink.definition_()

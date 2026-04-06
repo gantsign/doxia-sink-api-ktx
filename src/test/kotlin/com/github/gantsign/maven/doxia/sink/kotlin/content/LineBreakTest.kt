@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class LineBreakTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>()
 
-        val lineBreakContainer = object : LineBreakContainer {
-            override val sink: Sink = sink
-        }
+        val lineBreakContainer =
+            object : LineBreakContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -67,9 +67,10 @@ class LineBreakTest {
     fun `with args`() {
         val sink = mockk<Sink>()
 
-        val lineBreakContainer = object : LineBreakContainer {
-            override val sink: Sink = sink
-        }
+        val lineBreakContainer =
+            object : LineBreakContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -79,7 +80,7 @@ class LineBreakTest {
             id = "id1",
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
-            title = "title1"
+            title = "title1",
         )
 
         verify { sink.lineBreak(any()) }

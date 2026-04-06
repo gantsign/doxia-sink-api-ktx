@@ -42,7 +42,7 @@ interface TableContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Table.() -> Unit
+        init: Table.() -> Unit,
     ) {
         sink.table(
             attributesOf(
@@ -59,8 +59,8 @@ interface TableContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Table(sink))
         sink.table_()

@@ -26,14 +26,14 @@ import org.apache.maven.doxia.sink.Sink
 import org.junit.jupiter.api.Test
 
 class PageBreakTest {
-
     @Test
     fun test() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val pageBreakContainer = object : PageBreakContainer {
-            override val sink: Sink = sink
-        }
+        val pageBreakContainer =
+            object : PageBreakContainer {
+                override val sink: Sink = sink
+            }
 
         pageBreakContainer.pageBreak()
 

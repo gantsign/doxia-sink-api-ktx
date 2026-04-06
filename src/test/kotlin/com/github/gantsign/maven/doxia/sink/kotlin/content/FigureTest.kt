@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class FigureTest {
-
     @Test
     fun `no args`() {
         val sink: Sink = mockk(relaxed = true)
 
-        val figureContainer = object : FigureContainer {
-            override val sink: Sink = sink
-        }
+        val figureContainer =
+            object : FigureContainer {
+                override val sink: Sink = sink
+            }
 
         val figureAttributesSlot = slot<SinkEventAttributes>()
         val figureCaptionAttributesSlot = slot<SinkEventAttributes>()
@@ -53,7 +53,7 @@ class FigureTest {
         every {
             sink.figureGraphics(
                 "http://example.com",
-                capture(figureGraphicsAttributesSlot)
+                capture(figureGraphicsAttributesSlot),
             )
         } just Runs
 
@@ -114,9 +114,10 @@ class FigureTest {
     fun `with args`() {
         val sink: Sink = mockk(relaxed = true)
 
-        val figureContainer = object : FigureContainer {
-            override val sink: Sink = sink
-        }
+        val figureContainer =
+            object : FigureContainer {
+                override val sink: Sink = sink
+            }
 
         val figureAttributesSlot = slot<SinkEventAttributes>()
         val figureCaptionAttributesSlot = slot<SinkEventAttributes>()
@@ -127,7 +128,7 @@ class FigureTest {
         every {
             sink.figureGraphics(
                 "http://example.com",
-                capture(figureGraphicsAttributesSlot)
+                capture(figureGraphicsAttributesSlot),
             )
         } just Runs
 
@@ -136,14 +137,14 @@ class FigureTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             caption(
                 id = "id2",
                 cssClass = "class2",
                 style = SimpleStyle(FontStyle.ITALIC),
                 lang = "lang2",
-                title = "title2"
+                title = "title2",
             ) {
                 +"caption1"
             }

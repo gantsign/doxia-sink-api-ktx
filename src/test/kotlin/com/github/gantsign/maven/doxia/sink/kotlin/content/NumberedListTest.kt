@@ -36,14 +36,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class NumberedListTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val numberedListContainer = object : NumberedListContainer {
-            override val sink: Sink = sink
-        }
+        val numberedListContainer =
+            object : NumberedListContainer {
+                override val sink: Sink = sink
+            }
 
         val numberedListAttributesSlot = slot<SinkEventAttributes>()
         val numberedListItemAttributesSlot = slot<SinkEventAttributes>()
@@ -90,9 +90,10 @@ class NumberedListTest {
     fun `with args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val numberedListContainer = object : NumberedListContainer {
-            override val sink: Sink = sink
-        }
+        val numberedListContainer =
+            object : NumberedListContainer {
+                override val sink: Sink = sink
+            }
 
         val numberedListAttributesSlot = slot<SinkEventAttributes>()
         val numberedListItemAttributesSlot = slot<SinkEventAttributes>()
@@ -108,7 +109,7 @@ class NumberedListTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             listItem {
                 +"body1"

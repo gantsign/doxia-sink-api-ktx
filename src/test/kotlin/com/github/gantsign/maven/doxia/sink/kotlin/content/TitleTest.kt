@@ -35,14 +35,14 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class TitleTest {
-
     @Test
     fun `no args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val titleContainer = object : TitleContainer {
-            override val sink: Sink = sink
-        }
+        val titleContainer =
+            object : TitleContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -72,9 +72,10 @@ class TitleTest {
     fun `with args`() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val titleContainer = object : TitleContainer {
-            override val sink: Sink = sink
-        }
+        val titleContainer =
+            object : TitleContainer {
+                override val sink: Sink = sink
+            }
 
         val attributesSlot = slot<SinkEventAttributes>()
 
@@ -85,7 +86,7 @@ class TitleTest {
             cssClass = "class1",
             style = SimpleStyle(FontStyle.BOLD),
             lang = "lang1",
-            title = "title1"
+            title = "title1",
         ) {
             +"body1"
         }

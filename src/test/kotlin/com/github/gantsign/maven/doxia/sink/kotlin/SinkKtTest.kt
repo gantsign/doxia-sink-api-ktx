@@ -32,7 +32,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class SinkKtTest {
-
     @Test
     fun text_sinkKt() {
         val sink = mockk<Sink>(relaxed = true)
@@ -41,7 +40,7 @@ class SinkKtTest {
 
         every { sink.body(capture(attributesSlot)) } just Runs
 
-        SinkKt(sink)() {
+        SinkKt(sink) {
             body {
                 +"body1"
             }

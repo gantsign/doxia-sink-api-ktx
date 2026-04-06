@@ -33,7 +33,7 @@ interface TitleContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: Title.() -> Unit
+        init: Title.() -> Unit,
     ) {
         sink.title(
             attributesOf(
@@ -41,8 +41,8 @@ interface TitleContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(Title(sink))
         sink.title_()

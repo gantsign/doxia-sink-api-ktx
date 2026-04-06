@@ -24,5 +24,5 @@ import org.apache.maven.doxia.sink.Sink
 enum class Justify(val value: Int) {
     JUSTIFY_CENTER(Sink.JUSTIFY_CENTER),
     JUSTIFY_LEFT(Sink.JUSTIFY_LEFT),
-    JUSTIFY_RIGHT(Sink.JUSTIFY_RIGHT)
+    JUSTIFY_RIGHT(Sink.JUSTIFY_RIGHT),
 }

@@ -33,7 +33,7 @@ interface NumberedListItemContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: NumberedListItem.() -> Unit
+        init: NumberedListItem.() -> Unit,
     ) {
         sink.numberedListItem(
             attributesOf(
@@ -41,8 +41,8 @@ interface NumberedListItemContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(NumberedListItem(sink))
         sink.numberedListItem_()

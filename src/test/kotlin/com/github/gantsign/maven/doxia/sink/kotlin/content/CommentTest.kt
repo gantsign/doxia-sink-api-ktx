@@ -26,14 +26,14 @@ import org.apache.maven.doxia.sink.Sink
 import org.junit.jupiter.api.Test
 
 class CommentTest {
-
     @Test
     fun test() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val commentContainer = object : CommentContainer {
-            override val sink: Sink = sink
-        }
+        val commentContainer =
+            object : CommentContainer {
+                override val sink: Sink = sink
+            }
 
         commentContainer.comment {
             "body1"

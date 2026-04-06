@@ -26,14 +26,14 @@ import org.apache.maven.doxia.sink.Sink
 import org.junit.jupiter.api.Test
 
 class NonBreakingSpaceTest {
-
     @Test
     fun test() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val nonBreakingSpaceContainer = object : NonBreakingSpaceContainer {
-            override val sink: Sink = sink
-        }
+        val nonBreakingSpaceContainer =
+            object : NonBreakingSpaceContainer {
+                override val sink: Sink = sink
+            }
 
         nonBreakingSpaceContainer.nonBreakingSpace()
 

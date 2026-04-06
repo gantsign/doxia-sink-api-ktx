@@ -26,14 +26,14 @@ import org.apache.maven.doxia.sink.Sink
 import org.junit.jupiter.api.Test
 
 class RawTextTest {
-
     @Test
     fun test() {
         val sink = mockk<Sink>(relaxed = true)
 
-        val rawTextContainer = object : RawTextContainer {
-            override val sink: Sink = sink
-        }
+        val rawTextContainer =
+            object : RawTextContainer {
+                override val sink: Sink = sink
+            }
 
         rawTextContainer.rawText {
             "body1"

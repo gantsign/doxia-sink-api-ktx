@@ -34,7 +34,7 @@ interface TableCaptionContainer {
         style: Style? = null,
         lang: String = "",
         title: String = "",
-        init: TableCaption.() -> Unit
+        init: TableCaption.() -> Unit,
     ) {
         sink.tableCaption(
             attributesOf(
@@ -43,8 +43,8 @@ interface TableCaptionContainer {
                 SinkEventAttributes.CLASS to cssClass,
                 SinkEventAttributes.STYLE to style?.value,
                 SinkEventAttributes.LANG to lang,
-                SinkEventAttributes.TITLE to title
-            )
+                SinkEventAttributes.TITLE to title,
+            ),
         )
         init(TableCaption(sink))
         sink.tableCaption_()
